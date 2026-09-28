@@ -1,102 +1,305 @@
-# ✦ CABO - Multiplayer Card Game ✦
+# REY Card Game
 
-A modern, real-time multiplayer web adaptation of the classic memory and deduction card game **CABO**. Built with **React**, **TypeScript**, **Tailwind CSS**, and **Socket.IO**.
+> **REY’i hemen oynamak için:** [https://rey.cards](https://rey.cards)
 
----
+REY; hafıza, sezgi, blöf ve risk yönetimini bir araya getiren, iki oyunculu çevrim içi bir kart oyunudur. Oyuncular kapalı kartlarını hatırlamaya, rakibinin hamlelerini okumaya ve mümkün olan en düşük skorla eli tamamlamaya çalışır.
 
-## 🎮 Game Rules & Objective
-
-In **CABO**, your goal is to minimize the total point value of the cards in your hand before anyone else calls "CABO".
-
-1. **Setup**:
-   - Each player is dealt **4 cards face down** in a row.
-   - At the beginning of the round, every player secretly peeks at **2 of their cards** and memorizes them.
-2. **On Your Turn**:
-   - **Draw from the Deck**: Inspect the card secretly. You may swap it with any of your cards (or multiple matching cards), OR discard it. If discarded, and it has an ability (7-12), you may activate its power!
-   - **Draw from the Discard Pile**: Take the face-up card and swap it with one of your cards. (Powers cannot be triggered from the discard pile).
-   - **Call "CABO"**: If you think you hold the lowest total score, call CABO! You take no cards; every rival gets one final turn before all cards are revealed.
-3. **Special Card Powers**:
-   - **7 & 8 (Moon Owl / Solar Lynx)**: 👁️ **PEEK** — Secretly look at any one of your own cards.
-   - **9 & 10 (Astral Crow / Mystic Wolf)**: 📡 **SPY** — Secretly look at any one card of an opponent.
-   - **11 & 12 (Arcane Drake / Celestial Phoenix)**: 🔄 **SWAP** — Blindly trade one of your cards with any card of a rival.
-4. **Matching Cards (Multiple Discards)**:
-   - When replacing with a drawn card, if you know you hold 2 or more cards of the same rank (e.g. two 4s), you can declare a match!
-   - If they match: all are discarded and replaced with the single drawn card, **permanently reducing your hand size**!
-   - If they don't match: **PENALTY!** You keep them and draw an additional penalty card into your hand!
-5. **Kamikaze House Rule**:
-   - If a player ends the round holding **two 12s and two 13s**, they score **0 points** and all other players receive **50 points**!
-6. **Scoring**:
-   - **Lowest Score Wins**.
-   - If the Cabo caller has the strictly lowest score: **0 points**!
-   - If the Cabo caller fails (someone has equal or lower): **Caller's score + 10 penalty points**!
+Bu proje, **Google Developer Groups On Campus - Pamukkale Üniversitesi (GDGoC Denizli Pamukkale Üni) GameJam’i** adına geliştirilmiştir.
 
 ---
 
-## ✨ Features
+## Oyun Hakkında
 
-- **🌐 Real-Time Multiplayer**: Instant WebSocket synchronization with room codes and live turn updates.
-- **🔢 6-Digit Room Codes**: Simple 6-digit room codes (e.g., `582910`) for easy verbal or text sharing.
-- **📱 QR Code Sharing**: Instant QR Code generator rendered in the lobby for scanning directly from mobile phone cameras.
-- **🎨 Custom Card Designs**: Handcrafted mystical vector SVG artwork for all card ranks from **0 to 13** (Void Wisp, Forest Pixie, Crystal Stag, Moon Owl, Chaos Dragon, and more) with custom borders, ability pills, and glowing card backs.
-- **🔊 Procedural Sound FX**: Zero-dependency Web Audio API sound synthesizer with custom audio for card snaps, draws, 3D flips, peek chimes, spy sonar, swap warps, Cabo sirens, and victory fanfares.
-- **🤖 Built-in AI Bots**: Host can add or remove intelligent AI bots (Bot Luna, Bot Orion, etc.) to practice solo or fill player slots.
-- **🎲 High-Performance 2D Isometric Table**:
-  - Pure 2D hardware-accelerated rendering optimized for mobile and desktop 60/120 FPS with zero touch/drag lag.
-  - Classic casino felt table with 2.5D beveled mahogany wood rails, brass rivets, padded armrest rail, and emerald velvet felt with 60°/120° isometric diamond weave texture.
-  - Completely eliminates heavy 3D compositing layers, free camera disorientation, and mobile battery drain.
-- **📚 2D Isometric Physical Stacked Deck**: Multi-layered card stack with realistic diagonal offset depth, elevation, and tactile hover/tap draw effects.
-- **🎴 2.5D Isometric Elevated Cards**: Cards rest on the felt with realistic diagonal cast shadows and physically lift off the table when hovered or selected.
-- **📱 Mobile-First Responsive Viewport**: Perfectly auto-fits phone and tablet screens seamlessly without awkward camera dragging or gesture conflicts.
-- **📖 In-Game Interactive Codex**: Click the book icon `(?)` anytime during the game for full rule explanations and power guides.
+Her oyuncu oyuna dört kapalı kartla başlar ve yalnızca seçtiği iki kartı kısa süreliğine görür. Oyunun devamında kart çekerek, kart değiştirerek, eşleşen kartları atarak ve doğru zamanda **“REY”** diyerek rakibinden daha düşük bir el oluşturmaya çalışır.
+
+Bir parti toplam üç elden oluşur. Üçüncü elde kazanılan veya kaybedilen skorlar üç kat uygulanır.
+
+## İlham Kaynakları
+
+REY’in temel oyun fikri, kapalı kartları hatırlama ve en düşük el toplamına ulaşma üzerine kurulu olan **Cabo** oyunundan ilham alır.
+
+Ayrıca benzer hafıza, risk ve düşük skor mekaniklerini kullanan **Rat-a-Tat Cat** de projenin ilham kaynaklarından biridir.
+
+REY; bu oyunlardan aldığı temel fikirleri özel güçler, çiftleme sistemi, REY çağrısı, Kamikaze, üç ellik parti yapısı ve gerçek zamanlı çevrim içi oynanış gibi kendine özgü mekaniklerle genişletir.
+
+> REY bağımsız bir projedir ve adı geçen oyunların yapımcıları veya hak sahipleriyle bağlantılı değildir.
 
 ---
 
-## 🚀 Quick Start
+## Temel Özellikler
 
-### Docker ile tek komut production çalıştırma
+- Gerçek zamanlı, iki oyunculu çevrim içi oynanış
+- Altı haneli oda koduyla masa oluşturma ve masaya katılma
+- QR kod ile oda paylaşma ve mobil cihazdan QR okutma
+- Tek oyunculu pratik için bot desteği
+- Mobil ve masaüstü uyumlu arayüz
+- Optimize edilmiş yalancı izometrik oyun masası
+- Özel hazırlanmış 0–13 kart görselleri
+- Üç elden oluşan parti sistemi
+- Çiftleme, üçleme ve dörtleme mekanikleri
+- Röntgen, Casusluk ve El Değiştirme özel güçleri
+- REY çağrısı ve Kamikaze mekanikleri
+- Oyuncu başına 20 saniyelik sunucu kontrollü hamle süresi
+- Son saniyelerde görsel ve sesli süre uyarısı
+- Kısa süreli bağlantı kesintilerinde aynı oyuna ve koltuğa geri dönme
+- Bağlantısı kopan oyuncu geri gelene kadar oyunu güvenli biçimde bekletme
+- Web Audio API ile oluşturulan kart, sıra ve bildirim sesleri
+- Canlı oyun oturumlarını izlemek için admin/debug paneli
+- Admin panelinden oyuncu ve deste kartlarına müdahale edebilme
+- Docker ile tek komut production kurulumu
 
-Kök dizinde `.env` dosyanızı hazırlayın (`.env.example` örnek olarak kullanılabilir), ardından:
+---
+
+## Oyun Akışı
+
+### 1. İlk bakış
+
+Her oyuncuya dört kapalı kart dağıtılır. Oyuncular kendi kartlarından iki tanesini seçerek kısa süreliğine görür ve kartların konumlarını ezberler.
+
+### 2. Hamle yapmak
+
+Sırası gelen oyuncunun hamlesini tamamlamak için 20 saniyesi vardır. Oyuncu:
+
+- Desteden kart çekebilir.
+- Ortadaki açık kartı alabilir.
+- Çektiği kartı kendi kartlarından biriyle değiştirebilir.
+- Uygun kartları çiftleyebilir, üçleyebilir veya dörtleyebilir.
+- Uygun durumda özel güç kullanabilir.
+- Elinin yeterince düşük olduğunu düşünüyorsa “REY” diyebilir.
+- Gerekli kartlara sahipse Kamikaze yapabilir.
+
+Süre dolduğunda tamamlanmamış hamle güvenli biçimde sonlandırılır ve sıra rakibe geçer.
+
+### 3. REY çağrısı
+
+Oyuncu elinin rakibinden daha düşük olduğunu düşünüyorsa “REY” diyebilir. Son hamleler tamamlandıktan sonra kartlar açılır ve eller karşılaştırılır.
+
+### 4. Parti sonu
+
+Bir parti üç elden oluşur. Üçüncü elde kazanılan ve kaybedilen tüm skorlar üç ile çarpılır. Parti sonunda toplam skoru daha düşük olan oyuncu kazanır.
+
+---
+
+## Özel Güçler
+
+Özel güçler oyunun belirli aşamalarında sunucu tarafından olasılık kurallarına göre oluşturulur. Güçlerin çıkma ihtimalleri oyunculara gösterilmez.
+
+### Röntgen
+
+- **Seviye 1:** Kendi kartlarından birini gör.
+- **Seviye 2:** Kendi kartlarından ikisini gör.
+- **Seviye 3:** Kendi kartlarının tamamını ve desteden gelecek sıradaki kartı gör.
+
+### Casusluk
+
+- **Seviye 1:** Rakibin kartlarından birini gör.
+- **Seviye 2:** Rakibin kartlarından ikisini gör.
+- **Seviye 3:** Rakibin bütün kartlarını gör.
+
+### El Değiştirme
+
+Oyuncuların ellerindeki bütün kartlar karşılıklı olarak değiştirilir.
+
+---
+
+## Skor Sistemi
+
+| Davranış | Skor |
+|---|---:|
+| Düşük el ile kazanmak | +40 |
+| REY çağrısıyla düşük elden kazanmak | +60 |
+| Başarılı çiftleme | +20 |
+| Üst üste başarılı çiftleme | Ek +20 |
+| Rakibin Kamikaze yapması | -20 |
+| Kamikaze şansı varken kullanmamak | -20 |
+| REY dedikten sonra elin yüksek çıkması | -10 |
+
+Üçüncü eldeki bütün skor değişimleri üç kat uygulanır.
+
+---
+
+## Kullanılan Teknolojiler
+
+### İstemci
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Socket.IO Client
+- Lucide React
+- QR Scanner
+- QRCode React
+- Canvas Confetti
+- Web Audio API
+
+### Sunucu
+
+- Node.js
+- TypeScript
+- Express
+- Socket.IO
+
+### Dağıtım
+
+- Docker
+- Docker Compose
+- Nginx
+- Cloudflare
+
+---
+
+## Yerel Geliştirme
+
+### Gereksinimler
+
+- Node.js 20 veya üzeri
+- npm
+
+### Bağımlılıkları yükleme
+
+```bash
+npm --prefix client install
+npm --prefix server install
+```
+
+### Geliştirme ortamını başlatma
+
+```bash
+npm run dev
+```
+
+Geliştirme sırasında:
+
+- İstemci: [http://localhost:5173](http://localhost:5173)
+- Sunucu: [http://localhost:3001](http://localhost:3001)
+
+### Production build
+
+```bash
+npm run build
+npm start
+```
+
+Production uygulaması varsayılan olarak aşağıdaki adresten sunulur:
+
+```text
+http://localhost:3001
+```
+
+---
+
+## Ortam Değişkenleri
+
+Proje kök dizininde bir `.env` dosyası oluşturun:
+
+```env
+ADMIN_PASSWORD=guvenli-admin-sifresi
+ADMIN_SESSION_SECRET=uzun-ve-rastgele-bir-anahtar
+APP_PORT=3001
+RECONNECT_GRACE_MS=180000
+TURN_DURATION_MS=20000
+```
+
+| Değişken | Açıklama |
+|---|---|
+| `ADMIN_PASSWORD` | Admin paneline giriş şifresi |
+| `ADMIN_SESSION_SECRET` | Admin oturumlarının imzalanmasında kullanılan gizli anahtar |
+| `APP_PORT` | Docker üzerinden dışarı açılacak port |
+| `RECONNECT_GRACE_MS` | Bağlantısı kopan oyuncunun geri dönmesi için tanınan süre |
+| `TURN_DURATION_MS` | Bir oyuncunun hamle süresi |
+
+---
+
+## Docker ile Çalıştırma
+
+`.env` dosyasını hazırladıktan sonra client ve server’ı tek komutla başlatabilirsiniz:
 
 ```bash
 docker compose up --build -d
 ```
 
-Client production olarak derlenir ve Node.js sunucusu tarafından API ile Socket.IO'nun yanında aynı origin üzerinden servis edilir. Uygulama varsayılan olarak **http://localhost:3001** adresindedir. Portu değiştirmek için `.env` içindeki `APP_PORT` değerini kullanın.
+Canlı logları görüntülemek için:
 
 ```bash
-# Canlı loglar
 docker compose logs -f rey
+```
 
-# Kapatma
+Uygulamayı durdurmak için:
+
+```bash
 docker compose down
 ```
 
-Kamera ile QR okutma production ortamında HTTPS gerektirir. İnternete açık kurulumda container'ın önüne TLS sonlandıran bir reverse proxy/load balancer koyun.
+Varsayılan olarak servis yalnızca aşağıdaki yerel adrese bağlanır:
 
-### 1. Install Dependencies
-```bash
-# From the project root:
-cd client && npm install
-cd ../server && npm install
-cd ..
+```text
+127.0.0.1:3001
 ```
 
-### 2. Run in Development Mode
-To run both the server (port 3001) and Vite client (port 5173) concurrently:
-```bash
-npm run dev
-```
-Open **[http://localhost:5173](http://localhost:5173)** in your browser!
+İnternete açık production kurulumunda uygulamanın önünde Nginx gibi bir reverse proxy ve HTTPS kullanılması önerilir.
 
-### 3. Production Build & Run
-To compile the client bundle and start the unified server:
-```bash
-npm run build
-npm start
-```
-The application will be served at **[http://localhost:3001](http://localhost:3001)**.
+---
 
-### 4. Playing on Local Network / Mobile
-To invite friends on your local Wi-Fi:
-1. Start the server with `npm start` (or `npm run dev -- --host`).
-2. Share your local IP (e.g., `http://192.168.1.X:3001`) or let your friends scan the QR Code displayed on screen!
+## Admin Paneli
+
+Admin paneli aktif oyun oturumlarının debug amacıyla izlenmesini sağlar.
+
+Admin yetkilisi:
+
+- Devam eden oyun oturumlarını görebilir.
+- Her iki oyuncunun bütün kartlarını inceleyebilir.
+- Destede gelecek kartları görebilir.
+- Oyuncuların kartlarını değiştirebilir.
+- Gelecek kartlara müdahale edebilir.
+- Oyun durumunu ve aksiyon kayıtlarını takip edebilir.
+
+Admin tarafından yapılan kart değişiklikleri canlı oyuna doğrudan uygulanır ve oyunculara admin müdahalesi bildirimi gösterilir.
+
+---
+
+## Proje Yapısı
+
+```text
+.
+├── client/                 # React istemcisi
+│   ├── public/
+│   │   └── images/         # Kartlar, logo ve arka plan
+│   └── src/
+│       ├── audio/          # Web Audio ses motoru
+│       ├── components/     # Oyun ve arayüz bileşenleri
+│       ├── types/          # İstemci veri tipleri
+│       └── utils/          # Yardımcı fonksiyonlar
+├── server/
+│   └── src/
+│       ├── aiPlayer.ts     # Bot davranışları
+│       ├── cards.ts        # Deste ve özel güç üretimi
+│       ├── gameEngine.ts   # Sunucu otoriteli oyun motoru
+│       ├── roomManager.ts  # Oda ve oyuncu yönetimi
+│       └── server.ts       # Express ve Socket.IO sunucusu
+├── deploy/                 # Nginx ve servis yapılandırmaları
+├── Dockerfile
+└── docker-compose.yml
+```
+
+---
+
+## Katkı Sağlayanlar
+
+- **Poyraz Hancılar**
+- **Ali Arhan Çatalbaş**
+- **Amanda Xhafaj**
+
+---
+
+## Etkinlik
+
+Bu proje, **Google Developer Groups On Campus - Pamukkale Üniversitesi (GDGoC Denizli Pamukkale Üni) GameJam’i** adına yapılmıştır.
+
+---
+
+## Canlı Oyun
+
+Oyunu herhangi bir kurulum yapmadan doğrudan tarayıcınızdan oynayabilirsiniz:
+
+### [https://rey.cards](https://rey.cards)
